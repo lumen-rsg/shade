@@ -21,6 +21,8 @@ std::string runCommand(const std::string& cmd) {
 void displaySystemInfo() {
     // MOTD messages
     const std::vector<std::string> motd_list = {
+		"lets all love Lain!",
+        "try also 'touch grass'",
         "monika, luv u <3",
         "keep coding, keep hacking",
         "you are the architect of your system",
@@ -30,6 +32,7 @@ void displaySystemInfo() {
         "x11 should go - cv2",
         "sometimes i dream about cheese",
         "nine plus ten",
+        "warm hello to cv2",
         "warm hello to kirgly",
         "warm hello to dprog",
         "warm hello to Ivan Ruban",
@@ -48,6 +51,7 @@ void displaySystemInfo() {
         "nvidia stable drivers when",
         "zhest",
         "std::bitset<64> bs(arch);",
+		"i am a terminal samurai",
         "ASCII madness",
         "UTF-8 madness",
         "anemo install love",
@@ -99,6 +103,7 @@ void displaySystemInfo() {
         "who needs a GUI anyway?",
         "are you even root?",
         "root dance time?",
+		"dude, that easy to exit - :q",
         "anemo update --force",
         "anemo upgrade --paranoid",
         "why isn't systemd a kernel module?",
