@@ -218,14 +218,28 @@ void displaySystemInfo() {
         "\033[1;36m┗ ┗┗ ┛┗┗┗ ┛┗┗┗┛┗┛   |\033[0m    "
     };
 
-    // System info with colors
-    const std::vector sysinfo = {
-        "\033[1;32mOS       :\033[0m " + runCommand("cat /etc/os-release | grep '^NAME=' | cut -d'=' -f2 | tr -d '\"'"),
-        "\033[1;32mKernel   :\033[0m " + runCommand("uname -r"),
-        "\033[1;32mUptime   :\033[0m " + runCommand("uptime -p"),
-        "\033[1;32mCPU      :\033[0m " + runCommand("grep 'model name' /proc/cpuinfo | head -1 | cut -d':' -f2 | xargs"),
-        "\033[1;32mMemory   :\033[0m " + runCommand("free -h | awk '/^Mem:/ {print $3\"/\"$2}'"),
-        "\033[1;32mPackages :\033[0m " + runCommand("anemo count") + " (anemo)"
+    const std::vector<std::string> sysinfo = {
+        "\033[1;32mUser       :\033[0m " + runCommand("whoami"),
+        "\033[1;32mHostname   :\033[0m " + runCommand("hostname"),
+        "\033[1;32mOS         :\033[0m " + runCommand("cat /etc/os-release | grep '^NAME=' | cut -d'=' -f2 | tr -d '\"'"),
+        "\033[1;32mKernel     :\033[0m " + runCommand("uname -r"),
+        "\033[1;32mArch       :\033[0m " + runCommand("uname -m"),
+        "\033[1;32mUptime     :\033[0m " + runCommand("uptime -p"),
+        "\033[1;32mLoad Avg   :\033[0m " + runCommand("uptime | awk -F'load average:' '{print $2}' | xargs"),
+        "\033[1;32mCPU        :\033[0m " + runCommand("grep 'model name' /proc/cpuinfo | head -1 | cut -d':' -f2 | xargs"),
+        "\033[1;32mMemory     :\033[0m " + runCommand("free -h | awk '/^Mem:/ {print $3\"/\"$2}'"),
+        "\033[1;32mDisk       :\033[0m " + runCommand("df -h --output=used,size / | tail -1 | xargs"),
+        "\033[1;32mDisk Model :\033[0m " + runCommand("lsblk -nd -o model | head -1"),
+        "\033[1;32mFilesystem :\033[0m " + runCommand("findmnt -n -o FSTYPE /"),
+        "\033[1;32mGPU        :\033[0m " + runCommand("lspci | grep -i 'VGA\\|3D' | cut -d ':' -f3 | xargs"),
+        "\033[1;32mNetwork    :\033[0m " + runCommand("ip -o -4 addr show | awk '{print $2, $4}' | head -1"),
+        "\033[1;32mPackages   :\033[0m " + runCommand("anemo count") + " (anemo)",
+        "\033[1;32mBattery    :\033[0m " + runCommand("cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo 'No Battery'"),
+        "\033[1;32mShell      :\033[0m " + runCommand("echo $SHELL"),
+        "\033[1;32mTerminal   :\033[0m " + runCommand("basename $TERM"),
+        "\033[1;32mDE         :\033[0m " + runCommand("echo $XDG_CURRENT_DESKTOP"),
+        "\033[1;32mWM         :\033[0m " + runCommand("echo $XDG_SESSION_TYPE"),
+        "\033[1;32mTimezone   :\033[0m " + runCommand("timedatectl show --property=Timezone --value")
     };
 
     const std::string user = runCommand("whoami");
