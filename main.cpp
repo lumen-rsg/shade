@@ -21,6 +21,7 @@ std::string runCommand(const std::string& cmd) {
 void displaySystemInfo() {
     // MOTD messages
     const std::vector<std::string> motd_list = {
+			"somebody touch my_spaghetti"
 		"lets all love Lain!",
         "try also 'touch grass'",
         "monika, luv u <3",
