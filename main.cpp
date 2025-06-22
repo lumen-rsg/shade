@@ -21,8 +21,8 @@ std::string runCommand(const std::string& cmd) {
 void displaySystemInfo() {
     // MOTD messages
     const std::vector<std::string> motd_list = {
-			"somebody touch my_spaghetti"
-		"lets all love Lain!",
+        "somebody touch my_spaghetti",
+        "lets all love Lain!",
         "try also 'touch grass'",
         "monika, luv u <3",
         "keep coding, keep hacking",
@@ -42,7 +42,6 @@ void displaySystemInfo() {
         "how can one patch KDE for FreeBSD?",
         "wayland.",
         "XDG (xross debugging group)",
-        "element impact",
         "athena",
         "intel e1000e kernel panic",
         "POSIX is different",
@@ -52,13 +51,13 @@ void displaySystemInfo() {
         "nvidia stable drivers when",
         "zhest",
         "std::bitset<64> bs(arch);",
-		"i am a terminal samurai",
+        "i am a terminal samurai",
         "ASCII madness",
         "UTF-8 madness",
-        "anemo install love",
-        "anemo upgrade myself",
-        "anemo remove anemo",
-        "tip: anemo list will show all installed packages",
+        "gradient install love",
+        "gradient upgrade myself",
+        "gradient remove gradient",
+        "tip: gradient list will show all installed packages",
         "THIS IS THE YEAR OF LINUX DESKTOP!!!11!!1",
         "why bother using a server when you have an old laptop",
         "bash? nah. stun",
@@ -74,7 +73,7 @@ void displaySystemInfo() {
         ":)",
         ":(",
         ":/",
-        "anemo? yes.",
+        "gradient? yes.",
         "why bother using other distros to build your own one",
         "please compile another 14000 packages, please",
         "seriously, how many messages are here?!",
@@ -104,9 +103,9 @@ void displaySystemInfo() {
         "who needs a GUI anyway?",
         "are you even root?",
         "root dance time?",
-		"dude, that easy to exit - :q",
-        "anemo update --force",
-        "anemo upgrade --paranoid",
+        "dude, that easy to exit - :q",
+        "gradient update --force",
+        "gradient upgrade --paranoid",
         "why isn't systemd a kernel module?",
         "when in doubt, `dd` it",
         "init 6 to solve all your problems",
@@ -212,50 +211,73 @@ void displaySystemInfo() {
     std::uniform_int_distribution<size_t> dist(0, motd_list.size() - 1);
     const std::string& motd = motd_list[dist(gen)];
 
-    // Logo with space for MOTD
-    const std::vector<std::string> logo = {
-        "\033[1;36m  ┓          ┏┓┏┓   |\033[0m    ",
-        "\033[1;36m┏┓┃┏┓┏┳┓┏┓┏┓╋┃┃┗┓   |\033[0m    ",
-        "\033[1;36m┗ ┗┗ ┛┗┗┗ ┛┗┗┗┛┗┛   |\033[0m    "
+    const std::vector<std::string> logo_lines = {
+    R"( ___                                                   )",
+    R"(/\_ \                        __                        )",
+    R"(\//\ \    __  __    ___ ___ /\_\    ___      __        )",
+    R"(  \ \ \  /\ \/\ \ /' __` __`\/\ \ /' _ `\  /'__`\      )",
+    R"(   \_\ \_\ \ \_\ \/\ \/\ \/\ \ \ \/\ \/\ \/\ \L\.\_    )",
+    R"(   /\____\\ \____/\ \_\ \_\ \_\ \_\ \_\ \_\ \__/.\_\   )",
+    R"(   \/____/ \/___/  \/_/\/_/\/_/\/_/\/_/\/_/\/__/\/_/   )"
     };
 
+    std::string version =
+          "                                    powered by linux";
+
+
+    const std::vector<std::string> color_codes = {
+    "\033[38;5;27m",
+    "\033[38;5;33m",
+    "\033[38;5;39m",
+    "\033[38;5;69m",
+    "\033[38;5;105m",
+    "\033[38;5;141m",
+    "\033[38;5;177m",
+    };
+
+
     const std::vector<std::string> sysinfo = {
-        "\033[1;32mUser       :\033[0m " + runCommand("whoami"),
-        "\033[1;32mHostname   :\033[0m " + runCommand("hostname"),
-        "\033[1;32mOS         :\033[0m " + runCommand("cat /etc/os-release | grep '^NAME=' | cut -d'=' -f2 | tr -d '\"'"),
-        "\033[1;32mKernel     :\033[0m " + runCommand("uname -r"),
-        "\033[1;32mArch       :\033[0m " + runCommand("uname -m"),
-        "\033[1;32mUptime     :\033[0m " + runCommand("uptime -p"),
-        "\033[1;32mLoad Avg   :\033[0m " + runCommand("uptime | awk -F'load average:' '{print $2}' | xargs"),
-        "\033[1;32mCPU        :\033[0m " + runCommand("grep 'model name' /proc/cpuinfo | head -1 | cut -d':' -f2 | xargs"),
-        "\033[1;32mMemory     :\033[0m " + runCommand("free -h | awk '/^Mem:/ {print $3\"/\"$2}'"),
-        "\033[1;32mDisk       :\033[0m " + runCommand("df -h --output=used,size / | tail -1 | xargs"),
-        "\033[1;32mDisk Model :\033[0m " + runCommand("lsblk -nd -o model | head -1"),
-        "\033[1;32mFilesystem :\033[0m " + runCommand("findmnt -n -o FSTYPE /"),
-        "\033[1;32mGPU        :\033[0m " + runCommand("lspci | grep -i 'VGA\\|3D' | cut -d ':' -f3 | xargs"),
-        "\033[1;32mNetwork    :\033[0m " + runCommand("ip -o -4 addr show | awk '{print $2, $4}' | head -1"),
-        "\033[1;32mPackages   :\033[0m " + runCommand("anemo count") + " (anemo)",
-        "\033[1;32mBattery    :\033[0m " + runCommand("cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo 'No Battery'"),
-        "\033[1;32mShell      :\033[0m " + runCommand("echo $SHELL"),
-        "\033[1;32mTerminal   :\033[0m " + runCommand("basename $TERM"),
-        "\033[1;32mDE         :\033[0m " + runCommand("echo $XDG_CURRENT_DESKTOP"),
-        "\033[1;32mWM         :\033[0m " + runCommand("echo $XDG_SESSION_TYPE"),
-        "\033[1;32mTimezone   :\033[0m " + runCommand("timedatectl show --property=Timezone --value")
+        "\033[1;32m \\\\ User       :\033[0m " + runCommand("whoami"),
+        "\033[1;32m // Hostname   :\033[0m " + runCommand("hostnamectl hostname"),
+        "\033[1;32m \\\\ OS         :\033[0m " + runCommand("cat /etc/os-release | grep '^NAME=' | cut -d'=' -f2 | tr -d '\"'"),
+        "\033[1;32m // Kernel     :\033[0m " + runCommand("uname -r"),
+        "\033[1;32m \\\\ Arch       :\033[0m " + runCommand("uname -m"),
+        "\033[1;32m // Uptime     :\033[0m " + runCommand("uptime -p"),
+        "\033[1;32m \\\\ Load Avg   :\033[0m " + runCommand("uptime | awk -F'load average:' '{print $2}' | xargs"),
+        "\033[1;32m // CPU        :\033[0m " + runCommand("grep 'model name' /proc/cpuinfo | head -1 | cut -d':' -f2 | xargs"),
+        "\033[1;32m \\\\ Memory     :\033[0m " + runCommand("free -h | awk '/^Mem:/ {print $3\"/\"$2}'"),
+        "\033[1;32m // Disk       :\033[0m " + runCommand("df -h --output=used,size / | tail -1 | xargs"),
+        "\033[1;32m \\\\ Disk Model :\033[0m " + runCommand("lsblk -nd -o model | head -1"),
+        "\033[1;32m // Filesystem :\033[0m " + runCommand("findmnt -n -o FSTYPE /"),
+        "\033[1;32m \\\\ GPU        :\033[0m " + runCommand("lspci | grep -i 'VGA\\|3D' | cut -d ':' -f3 | xargs"),
+        "\033[1;32m // Network    :\033[0m " + runCommand("ip -o -4 addr show | awk '{print $2, $4}' | head -1"),
+        "\033[1;32m \\\\ Packages   :\033[0m " + runCommand("gradient count") + " (gradient)",
+        "\033[1;32m // Battery    :\033[0m " + runCommand("cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo 'No Battery'"),
+        "\033[1;32m \\\\ Shell      :\033[0m " + runCommand("echo $SHELL"),
+        "\033[1;32m // Terminal   :\033[0m " + runCommand("basename $TERM"),
+        "\033[1;32m \\\\ DE         :\033[0m " + runCommand("echo $XDG_CURRENT_DESKTOP"),
+        "\033[1;32m // WM         :\033[0m " + runCommand("echo $XDG_SESSION_TYPE"),
+        "\033[1;32m \\\\ Timezone   :\033[0m " + runCommand("timedatectl show --property=Timezone --value")
     };
 
     const std::string user = runCommand("whoami");
     const std::string hostname = runCommand("hostname");
-    std::cout << "\033[1;34m" << user << "@" << hostname << "\033[0m\n";
-    std::cout << "\033[1;35m" << motd << "\033[0m " << std::endl;
-    // Print logo and system info side by side
-    const size_t logo_lines = logo.size();
-    const size_t sys_lines = sysinfo.size();
 
-    for (size_t i = 0; i < std::max(logo_lines, sys_lines); ++i) {
-        std::string logo_part = i < logo_lines ? logo[i] : "                  "; // Padding for missing logo lines
-        std::string sys_part  = i < sys_lines ? sysinfo[i] : "";
-        std::cout << std::left << std::setw(25) << logo_part << sys_part << std::endl;
+    int ix = 0;
+
+    for (const auto& line: logo_lines) {
+        std::cout << color_codes[ix] << line << std::endl;
+        ix++;
     }
+    std::cout << version << std::endl;
+    std::cout << "\033[0m" << std::endl;
+
+    std::cout << "\033[1;96m" << motd << "\033[0m" << std::endl << std::endl;
+
+    for (const auto& string: sysinfo) {
+        std::cout << string << std::endl;
+    }
+
 }
 
 int main() {
