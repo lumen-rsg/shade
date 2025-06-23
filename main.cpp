@@ -281,6 +281,11 @@ void displaySystemInfo() {
 }
 
 int main() {
+    if (!runCommand("cat /etc/os-release | grep '^NAME=' | cut -d'=' -f2 | tr -d '\"'").contains("lumina")){
+        std::cerr << "\033[38;5;177m" << "shadectl is supported on lumina only." << std::endl;
+        std::cerr << "\033[1;96m" << "install lumina at http://lumina-linux.org" << "\033[0m" << std::endl;
+        std::exit(EXIT_FAILURE);
+    }
     displaySystemInfo();
     return 0;
 }
